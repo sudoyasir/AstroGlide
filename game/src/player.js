@@ -16,15 +16,58 @@ class Player extends GameObject {
 		this.setupInputs();
 
 		// Create the player object - a 1 unit square cube
-		const boxOptions = { width: 1, height: 1, depth: 1 };
-		this.playerMesh = BABYLON.MeshBuilder.CreateBox("bird", boxOptions, scene);
-		this.playerMaterial = new BABYLON.StandardMaterial("Player Material", scene);
+		// Create a Sphere for the orb
+		this.playerMesh = BABYLON.MeshBuilder.CreateSphere("orb", { diameter: 0.5 }, scene);
+
+		// Create a glowing material
+		this.playerMaterial = new BABYLON.StandardMaterial("OrbMaterial", scene);
+		this.playerMaterial.emissiveColor = BABYLON.Color3.FromHexString("#FF4500"); // Glowing orange
 		this.playerMesh.material = this.playerMaterial;
-		this.playerMesh.material.diffuseColor = BABYLON.Color3.White();
+
+		// Add a glow layer to enhance the glow effect
+		const glowLayer = new BABYLON.GlowLayer("glow", scene);
+		glowLayer.intensity = 1.0;
+
+		// Add a trail effect using a particle system
+		// Create a trail effect using a particle system
+		const trailParticleSystem = new BABYLON.ParticleSystem("orbTrail", 100, scene);
+		trailParticleSystem.particleTexture = new BABYLON.Texture("/game/img/texture.png", scene); // Ensure this path is correct
+		trailParticleSystem.emitter = this.playerMesh; // Emitter is the orb mesh
+
+		// Adjust the size and rate of particles for the trail effect
+		trailParticleSystem.minSize = 0.1;
+		trailParticleSystem.maxSize = 0.15;
+		trailParticleSystem.emitRate = 20;
+		trailParticleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+
+		// Set the lifetime of particles so they last as long as desired
+		trailParticleSystem.minLifeTime = 0.1;
+		trailParticleSystem.maxLifeTime = 0.3;
+
+		// Set speed of the particles to match the trailing effect
+		trailParticleSystem.minEmitPower = 1;
+		trailParticleSystem.maxEmitPower = 3;
+
+		// Emit particles opposite to the direction of movement
+		trailParticleSystem.direction1 = new BABYLON.Vector3(-2, 0, 1); // Adjust if needed for your coordinate system
+		trailParticleSystem.direction2 = new BABYLON.Vector3(-3, 0, 1);
+
+		// Adjust the gravity of the particles if needed
+		trailParticleSystem.gravity = new BABYLON.Vector3(10, -9.81, 0); // Optional
+
+		// Start the particle system
+		trailParticleSystem.start();
 	}
 
 	onDestroy() {
-		scene.removeMesh(this.playerMesh);
+		if (this.playerMesh) {
+			scene.removeMesh(this.playerMesh);
+			this.playerMesh.dispose();
+		}
+		if (this.trailParticleSystem) {
+			this.trailParticleSystem.stop();
+			this.trailParticleSystem.dispose();
+		}
 	}
 
 	update(deltaTime) {

@@ -90,7 +90,7 @@ class MainMenu extends GameObject {
 
 		// Create a Text Block that can display the current score
 		this.welcomeText = new BABYLON.GUI.TextBlock();
-		this.welcomeText.text = "Flying Cube Game!";
+		this.welcomeText.text = "Astro Glide";
 		this.welcomeText.fontFamily = "Impact";
 		this.welcomeText.color = "white";
 		this.welcomeText.fontSize = 72;
@@ -108,6 +108,8 @@ class MainMenu extends GameObject {
 		this.greetingText.horizontalAlignment = BABYLON.GUI.TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
 		this.greetingText.width = 0.5;
 		this.greetingText.height = 0.7;
+		this.greetingText.top = "30px";
+		
 
 		this.instructionsText = new BABYLON.GUI.TextBlock();
 		this.instructionsText.text = "press any key to play";

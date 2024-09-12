@@ -53,10 +53,7 @@ class Barrier extends GameObject {
 	testCollision(playerHeight) {
 		if (this.location > -1 && this.location < 1) {
 			// In the same location as the player
-			if (
-				playerHeight + 5.5 > this.ceilingBox.position.y || // 5.5 is the half the height of the box + half the height of the player
-				playerHeight - 5.5 < this.floorBox.position.y
-			) {
+			if (playerHeight + 4 > this.ceilingBox.position.y || playerHeight - 4 < this.floorBox.position.y) {
 				return true;
 			}
 		}

@@ -4,6 +4,8 @@ var gapSize = 3; // This determines the size of the gap to create between the fl
 class Barrier extends GameObject {
 	constructor() {
 		super();
+		this.hasBeenPassed = false; // Flag to check if the player has passed the obstacle
+		this.speed = 5;
 	}
 
 	init() {
@@ -12,7 +14,7 @@ class Barrier extends GameObject {
 
 		// Creates 2 boxes which will be used for the top and bottom obstacles,
 		// the floor will obscure the height of the object so we don't need to modify this much.
-		const boxOptions = { width: 1, height: 10};
+		const boxOptions = { width: 1, height: 10 };
 		this.ceilingBox = BABYLON.MeshBuilder.CreateCylinder("ceilingObstacle", boxOptions, scene);
 		this.floorBox = BABYLON.MeshBuilder.CreateCylinder("floorObstacle", boxOptions, scene);
 		// Materials impact how an object is rendered like color, texture etc.
@@ -35,6 +37,9 @@ class Barrier extends GameObject {
 		// Update the players physics:
 		this.ceilingBox.position.x = this.location;
 		this.floorBox.position.x = this.location;
+		if (this.location < 0 && this.location > -deltaTime * obstacleSpeed) {
+			addScore(1);
+		}
 
 		if (this.location < -25) {
 			destroyObject(this);

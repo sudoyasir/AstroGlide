@@ -112,14 +112,16 @@ class MainMenu extends GameObject {
 		
 
 		this.instructionsText = new BABYLON.GUI.TextBlock();
-		this.instructionsText.text = "press any key to play";
+		this.instructionsText.text = "Press any key to play!";
 		this.instructionsText.fontFamily = "Impact";
 		this.instructionsText.color = "#aafffa";
-		this.instructionsText.fontSize = 32;
+		this.instructionsText.fontSize = 22;
 		this.instructionsText.verticalAlignment = BABYLON.GUI.TextBlock.VERTICAL_ALIGNMENT_TOP;
 		this.instructionsText.horizontalAlignment = BABYLON.GUI.TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
 		this.instructionsText.width = 0.5;
 		this.instructionsText.height = 0.9;
+		this.instructionsText.top = "40px";
+
 
 		this.hudTexture.addControl(this.welcomeText);
 		this.hudTexture.addControl(this.greetingText);
